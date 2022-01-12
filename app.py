@@ -37,12 +37,6 @@ def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
 
-@app.route('/logout')
-def logout():
-    session.clear
-    return render_template('login.html')
-
-
 
 @app.route('/register')
 def move_register():
@@ -140,18 +134,38 @@ def insertReview():
 
 @app.route('/reviewlist')
 def abc():
-    review_list = list(db.reviewlist.find({}, {'_id': False}));
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-    return render_template('reviewList.html', reviewList=review_list)
+        review_list = list(db.reviewlist.find({}, {'_id': False}));
+
+        return render_template('reviewList.html', reviewList=review_list)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 # 이거는 reviewlist 랜더링 해주는 코드 입니다. 원석님
 
 
 
 @app.route('/mypage')
 def mypage():
-    rows = list(db.reviewlist.find({}, {'_id': False}))
-    print(rows)
-    return render_template("mypage.html", rows = rows)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        rows = list(db.reviewlist.find({}, {'_id': False}))
+        print(rows)
+        return render_template("mypage.html", rows=rows)
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+
 
 @app.route('/api/delete_review', methods=['POST'])
 def delete_review():
@@ -160,12 +174,6 @@ def delete_review():
     db.reviewlist.delete_one({'images': receive_file})
     # 리뷰 삭제하기
     return jsonify({'result': 'success', 'msg': '삭제 완료'})
-
-
-
-
-
-
 
 
 
