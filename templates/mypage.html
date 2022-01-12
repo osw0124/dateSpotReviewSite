@@ -162,9 +162,10 @@
                 data: {give_file : file},
                 success: function (response) {
                     alert(response["msg"])
+                    window.location.href = '/mypage'
                 }
             });
-            window.location.href = '/mypage'
+
         }
 
 
