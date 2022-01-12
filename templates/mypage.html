@@ -77,39 +77,46 @@
             height: 200px;
         }
 
-        .card-box__button{
+        .card-box__button {
             margin-top: 10px;
             display: flex;
             justify-content: flex-end;
 
         }
-        .card-box__image{
+
+        .card-box__image {
             width: 100%;
             display: flex;
             justify-content: center;
             border-radius: 10px;
 
         }
-        .card-box__image1{
+
+        .card-box__image1 {
             width: 500px;
         }
-        .card-box__name__star{
+
+        .card-box__name__star {
             background-color: white;
             margin-top: 10px;
         }
-        .card-box__content{
+
+        .card-box__content {
             background-color: white;
             margin-top: 10px;
 
         }
-        .card-box__content__hash{
+
+        .card-box__content__hash {
             display: flex;
             justify-content: flex-end;
         }
-        .card-box__content__row{
+
+        .card-box__content__row {
             margin: 10px;
         }
-        .card-box{
+
+        .card-box {
             width: 550px;
             margin: 0 auto;
             padding: 20px;
@@ -120,23 +127,53 @@
             justify-content: center;
             flex-direction: column;
         }
-        .mypage-head{
+
+        .mypage-head {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 20px;
             padding: 0px;
         }
-        .mypage-head__btn{
+
+        .mypage-head__btn {
             margin-left: 10px;
+        }
+
+        .card-boxs {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .btn {
+            background: dodgerblue;
+
         }
 
     </style>
 
     <script>
 
+
         const drawStar = (target) => {
             document.querySelector(`.star span`).style.width = `${target.value * 10}%`;
         }
+
+
+        function delete_review(file) {
+            $.ajax({
+                type: "POST",
+                url: `/api/delete_review`,
+                data: {give_file : file},
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.href = '/mypage'
+                }
+            });
+
+        }
+
+
+
 
     </script>
 
@@ -147,86 +184,37 @@
 <div class="inner">
     <div class="wrap">
         <div class="mypage-head">
-            <button type="button" class="btn btn-primary mypage-head__btn">홈</button>
-            <button type="button" class="btn btn-light mypage-head__btn">로그아웃</button>
-        </div>
-        <div class="card-boxs">
-            <div class="card-box">
-                <div class="card-box__image">
-                    <img class="card-box__image1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDz7r0vGWK6OUz1uM5VuKOAePeqzoDJb7aA&usqp=CAU" />
-                </div>
-                <div class="card-box__name__star">
-                    <h5>장소이름: 아쿠아리움</h5>
-                    <h5>별점: ★★★★☆</h5>
-                </div>
-                <div class="card-box__content">
-                    <div class="card-box__content__row"><h5>내용:</h5></div>
-                    <div class="card-box__content__row"><h5>아쿠아리움 너무 매밌었어요</h5</div>
-                    <div class="card-box__content__row card-box__content__hash">#창원</div>
-                </div>
-            </div>
-            <div class="card-box__button">
-                <button type="button" class="btn btn-dark">삭제</button>
-            </div>
-        </div>
-        <div class="card-boxs">
-            <div class="card-box">
-                <div class="card-box__image">
-                    <img class="card-box__image1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDz7r0vGWK6OUz1uM5VuKOAePeqzoDJb7aA&usqp=CAU" />
-                </div>
-                <div class="card-box__name__star">
-                    <h5>장소이름: 아쿠아리움</h5>
-                    <h5>별점: ★★★★☆</h5>
-                </div>
-                <div class="card-box__content">
-                    <div class="card-box__content__row"><h5>내용:</h5></div>
-                    <div class="card-box__content__row"><h5>아쿠아리움 너무 매밌었어요</h5</div>
-                    <div class="card-box__content__row card-box__content__hash">#창원</div>
-                </div>
-            </div>
-            <div class="card-box__button">
-                <button type="button" class="btn btn-dark">삭제</button>
-            </div>
-        </div>
-        <div class="card-boxs">
-            <div class="card-box">
-                <div class="card-box__image">
-                    <img class="card-box__image1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDz7r0vGWK6OUz1uM5VuKOAePeqzoDJb7aA&usqp=CAU" />
-                </div>
-                <div class="card-box__name__star">
-                    <h5>장소이름: 아쿠아리움</h5>
-                    <h5>별점: ★★★★☆</h5>
-                </div>
-                <div class="card-box__content">
-                    <div class="card-box__content__row"><h5>내용:</h5></div>
-                    <div class="card-box__content__row"><h5>아쿠아리움 너무 매밌었어요</h5</div>
-                    <div class="card-box__content__row card-box__content__hash">#창원</div>
-                </div>
-            </div>
-            <div class="card-box__button">
-                <button type="button" class="btn btn-dark">삭제</button>
-            </div>
-        </div>
-        <div class="card-boxs">
-            <div class="card-box">
-                <div class="card-box__image">
-                    <img class="card-box__image1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwDz7r0vGWK6OUz1uM5VuKOAePeqzoDJb7aA&usqp=CAU" />
-                </div>
-                <div class="card-box__name__star">
-                    <h5>장소이름: 아쿠아리움</h5>
-                    <h5>별점: ★★★★☆</h5>
-                </div>
-                <div class="card-box__content">
-                    <div class="card-box__content__row"><h5>내용:</h5></div>
-                    <div class="card-box__content__row"><h5>아쿠아리움 너무 매밌었어요</h5</div>
-                    <div class="card-box__content__row card-box__content__hash">#창원</div>
-                </div>
-            </div>
-            <div class="card-box__button">
-                <button type="button" class="btn btn-dark">삭제</button>
-            </div>
+            <button onclick="window.location.href='/reviewlist'" type="button" class="btn btn-primary mypage-head__btn">
+                홈
+            </button>
         </div>
 
+        <div class="card-boxs">
+            {% for row in rows %}
+                <div class="card-columm">
+                    <div class="card-box">
+                        <div class="card-box__image">
+                            <img class="card-box__image1" src="../static/upload/{{ row.images }}"/>
+                        </div>
+                        <div class="card-box__name__star">
+                            <h5>장소이름: {{ row.place }}</h5>
+                        </div>
+                        <div class="card-box__content">
+                            <div class="card-box__content__row"><h5>내용:</h5></div>
+                            <div class="card-box__content__row"><h5>{{ row.content }}</h5</div>
+                            <div class="card-box__content__row card-box__content__hash">#{{ row.area }}</div>
+                        </div>
+                    </div>
+                    <div class="card-box__button">
+                        <button onclick="delete_review('{{ row.images }}')" type="button" class="btn btn-dark">삭제
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+
+        </div>
 
 
     </div>

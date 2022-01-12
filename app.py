@@ -12,7 +12,8 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-client = MongoClient('3.37.129.172', 27017, username="test", password="test")
+# client = MongoClient('3.37.129.172', 27017, username="test", password="test")
+client = MongoClient('localhost', 27017)
 db = client.datespot
 
 
@@ -22,7 +23,9 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        return render_template('reviewList.html')
+        review_list = list(db.reviewlist.find({}, {'_id': False}));
+
+        return render_template('reviewList.html', reviewList=review_list)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -33,12 +36,6 @@ def home():
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
-
-@app.route('/logout')
-def logout():
-    session.clear
-    return render_template('login.html')
-
 
 
 @app.route('/register')
@@ -91,14 +88,9 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+# ------------------- 원석 작업 추가
 
-# 리뷰저장페이지
-@app.route('/api/reviewAdd_Page')
-def reviewInputPage():
-    return render_template('reviewInsert.html')
-
-
-## 내용 저장
+## 리뷰 저장
 @app.route('/api/review_input', methods=['POST'])
 def insertReview():
     placeName = request.form['place_give']
@@ -116,10 +108,12 @@ def insertReview():
     today = datetime.now();
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S');
 
-    # file-년-월-일-시-분-초 형태
+    # file-년-월-일-시-분-초 형태로 만들어서 이미지이름으로 저장
     filename = f'file-{mytime}';
 
+    # fstring을 사용해서 경로 설정
     save_to = f'static/upload/{filename}.{extension}'
+    # 저~~~~~장
     image.save(save_to)
 
     doc = {
@@ -133,7 +127,60 @@ def insertReview():
     db.reviewlist.insert_one(doc)
 
     return jsonify({'msg': '저장 완료!'})
+# ----------------------원석작업 끝
+
+
+# 여기서 부터 지섭 작업
+
+@app.route('/reviewlist')
+def abc():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        review_list = list(db.reviewlist.find({}, {'_id': False}));
+
+        return render_template('reviewList.html', reviewList=review_list)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+# 이거는 reviewlist 랜더링 해주는 코드 입니다. 원석님
+
+
+
+@app.route('/mypage')
+def mypage():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
+        rows = list(db.reviewlist.find({}, {'_id': False}))
+        print(rows)
+        return render_template("mypage.html", rows=rows)
+
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+
+
+
+@app.route('/api/delete_review', methods=['POST'])
+def delete_review():
+    receive_file = request.form['give_file']
+    print(receive_file)
+    db.reviewlist.delete_one({'images': receive_file})
+    # 리뷰 삭제하기
+    return jsonify({'result': 'success', 'msg': '삭제 완료'})
+
+
 
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
+
+
+
+

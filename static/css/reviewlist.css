@@ -15,24 +15,31 @@
     opacity: 0.7;
 }
 
+hr {
+    margin: 5px 0;
+}
 
 header {
     position: relative;
 }
+
 nav ul {
     position: absolute;
     right: 300px;
     margin-top: 30px;
 }
+
 nav li {
     margin-left: 10px;
 }
+
 nav a {
-    background-color: purple;
+    background-color: dodgerblue;
     border-radius: 10px;
     color: white;
     transition: 0.3s;
 }
+
 nav a:hover {
     background-color: white;
     border-radius: 10px;
@@ -52,25 +59,27 @@ section {
     left: 0;
     /*background-color: white;*/
 }
+
 .rightPosition {
     width: 65%;
     right: 0;
     height: 1000vh;
     position: absolute;
-    background-color: white;
+    /*background-color: white;*/
 }
 
 .addBtn {
     width: 100px;
     text-align: center;
     padding: 10px;
-    background-color: purple;
+    background-color: dodgerblue;
     color: white;
     border-radius: 10px;
     margin: 0 auto;
     cursor: pointer;
     transition: 0.3s;
 }
+
 .addBtn:hover {
     background-color: white;
     border-radius: 10px;
@@ -78,11 +87,56 @@ section {
     transition: 0.3s;
 }
 
+.rightPosition {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+
+.card {
+    /*overflow: hidden;*/
+    /*height: auto;*/
+    height: 540px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.card .card-img-top {
+    height: 200px;
+}
+
+.card #content {
+    height: 168px;
+}
 
 
+.star22 {
+    /*line-height: 1.5;*/
+    position: relative;
+    font-size: 30px;
+    color: #ddd;
+}
+
+.star22 span {
+    width: 60%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    color: purple;
+    overflow: hidden;
+    pointer-events: none;
+}
 
 
-/*---------------입력상자---------------*/
+.likeBtn:hover {
+    background-color: white;
+    border-radius: 10px;
+    color: purple;
+    transition: 0.3s;
+}
+
+
 .post-box {
     display: none;
     position: absolute;
@@ -93,6 +147,7 @@ section {
     border-radius: 15px;
     border: 5px solid white;
 }
+
 .post-box.active {
     display: block;
 }
@@ -164,9 +219,11 @@ section {
 .insertBtn:hover {
     background: purple;
     transition: 0.5s;
-    transform: scale(1.5) perspective(500px) rotateY(360deg);
+    transform: scale(1.1) perspective(500px);
     color: white;
 }
+
+
 
 
 
