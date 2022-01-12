@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/3ce50a59d5.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+
+    <title>Reviewlist</title>
+
+    <link rel="stylesheet" href="/static/css/reviewlist.css" />
+    <script defer src="/static/js/reviewList.js"></script>
+
+</head>
+<body>
+
+    <div class="backImage"></div>
+
+    <header>
+        <nav>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Mypage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section>
+        <div class="leftPosition">
+            <div class="addBtn">입력상자</div>
+
+            <div class="post-box">
+                <img src="/static/고양이.jpg" alt="업로드할 이미지" class="imagepreview" id="image_container">
+
+                <div class="custom-file mb-2">
+                    <input type="file" class="custom-file-input" id="customFile" accept="image/*"/>
+                    <label class="custom-file-label" for="customFile">사진 선택</label>
+                </div>
+
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">장소</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Default"
+                           aria-describedby="inputGroup-sizing-default" placeholder="이름" id="place">
+                </div>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">지역</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Default"
+                           aria-describedby="inputGroup-sizing-default" placeholder="이름" id="area">
+                </div>
+
+                <span class="starFont">별점</span>
+                <span class="star">
+              ★★★★★
+              <span>★★★★★</span>
+              <input type="range" oninput="drawStar(this)" value="0" step="1" min="0" max="10" id="starScore">
+            </span>
+
+                <div class="input-group hh">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">내용</span>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea" id="content"></textarea>
+                </div>
+
+                <div class="insertBtn" onclick="review_Add()">저장</div>
+
+            </div>
+        </div>
+
+
+        </div>
+
+
+        <div class="rightPosition"></div>
+    </section>
+
+
+</body>
+</html>
