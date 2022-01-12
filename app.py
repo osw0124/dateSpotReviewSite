@@ -92,14 +92,17 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+# ------------------- 원석 작업 추가
+## 리뷰리스트페이지
+@app.route('/review_List')
+def reviewListPage():
+    # jinja2를 사용하기위해 db에서 데이터 가져오기
+    review_list = list(db.reviewlist.find({}, {'_id': False}));
+    # ------------------------------------------↓ 값을 reviewList.html에 준다
+    return render_template('reviewList.html', reviewList=review_list)
 
-# 리뷰저장페이지
-@app.route('/api/reviewAdd_Page')
-def reviewInputPage():
-    return render_template('reviewInsert.html')
 
-
-## 내용 저장
+## 리뷰 저장
 @app.route('/api/review_input', methods=['POST'])
 def insertReview():
     placeName = request.form['place_give']
@@ -117,10 +120,12 @@ def insertReview():
     today = datetime.now();
     mytime = today.strftime('%Y-%m-%d-%H-%M-%S');
 
-    # file-년-월-일-시-분-초 형태
+    # file-년-월-일-시-분-초 형태로 만들어서 이미지이름으로 저장
     filename = f'file-{mytime}';
 
+    # fstring을 사용해서 경로 설정
     save_to = f'static/upload/{filename}.{extension}'
+    # 저~~~~~장
     image.save(save_to)
 
     doc = {
@@ -134,6 +139,8 @@ def insertReview():
     db.reviewlist.insert_one(doc)
 
     return jsonify({'msg': '저장 완료!'})
+# ----------------------원석작업 끝
+
 
 # 여기서 부터 지섭 작업
 
