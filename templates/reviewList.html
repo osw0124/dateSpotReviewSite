@@ -24,6 +24,10 @@
     <link rel="stylesheet" href="/static/css/reviewlist.css" />
     <script defer src="/static/js/reviewList.js"></script>
 
+    <script>
+
+    </script>
+
 </head>
 <body>
 
@@ -72,10 +76,10 @@
 
                 <span class="starFont">별점</span>
                 <span class="star">
-              ★★★★★
-              <span>★★★★★</span>
-              <input type="range" oninput="drawStar(this)" value="0" step="1" min="0" max="10" id="starScore">
-            </span>
+                  ★★★★★
+                  <span>★★★★★</span>
+                  <input type="range" oninput="drawStar(this)" value="0" step="1" min="0" max="5" id="starScore">
+                </span>
 
                 <div class="input-group hh">
                     <div class="input-group-prepend">
@@ -93,7 +97,45 @@
         </div>
 
 
-        <div class="rightPosition"></div>
+        <div class="rightPosition">
+{#            <div class="card" style="width: 18rem;">#}
+{#                <img class="card-img-top" src="/static/고양이.jpg" alt="Card image cap">#}
+{#                <div class="card-body">#}
+{#                    <h5 class="card-title">장소이름</h5>#}
+{#                    <hr/>#}
+{#                    <span class="star22">#}
+{#                      ★★★★★#}
+{#                    <span>★★★★★</span>#}
+{#                    </span>#}
+{#                    <hr/>#}
+{#                    <p class="card-text">내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용용내용내용내용내용</p>#}
+{#                    <p class="card-text" style="text-align: right">#지역</p>#}
+{#                    <div class="likeBtn">좋아요 : 개수</div>#}
+{#                </div>#}
+{#            </div>#}
+            {# jinja2 for문 #}
+            {% for data in reviewList %}
+
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/static/upload/{{ data['images'] }}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ data['place'] }}</h5>
+                    <hr/>
+                    <span class="star22">
+                      ★★★★★
+                        {% set score = data['score']|int * 20 %}
+                    <span style="width: {{ score }}%">★★★★★</span>
+                    </span>
+                    <hr/>
+                    <p class="card-text" id="content">{{ data['content'] }}</p>
+                    <p class="card-text" style="text-align: right">#{{ data['area'] }}</p>
+                    <div class="likeBtn">좋아요 : 개수</div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
     </section>
 
 
