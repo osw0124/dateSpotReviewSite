@@ -23,7 +23,9 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        return render_template('reviewList.html')
+        review_list = list(db.reviewlist.find({}, {'_id': False}));
+
+        return render_template('reviewList.html', reviewList=review_list)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -93,14 +95,6 @@ def check_dup():
     return jsonify({'result': 'success', 'exists': exists})
 
 # ------------------- 원석 작업 추가
-## 리뷰리스트페이지
-@app.route('/review_List')
-def reviewListPage():
-    # jinja2를 사용하기위해 db에서 데이터 가져오기
-    review_list = list(db.reviewlist.find({}, {'_id': False}));
-    # ------------------------------------------↓ 값을 reviewList.html에 준다
-    return render_template('reviewList.html', reviewList=review_list)
-
 
 ## 리뷰 저장
 @app.route('/api/review_input', methods=['POST'])
@@ -146,7 +140,9 @@ def insertReview():
 
 @app.route('/reviewlist')
 def abc():
-    return render_template("reviewList.html")
+    review_list = list(db.reviewlist.find({}, {'_id': False}));
+
+    return render_template('reviewList.html', reviewList=review_list)
 # 이거는 reviewlist 랜더링 해주는 코드 입니다. 원석님
 
 

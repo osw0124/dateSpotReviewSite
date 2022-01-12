@@ -34,7 +34,7 @@ nav li {
 }
 
 nav a {
-    background-color: purple;
+    background-color: dodgerblue;
     border-radius: 10px;
     color: white;
     transition: 0.3s;
@@ -72,7 +72,7 @@ section {
     width: 100px;
     text-align: center;
     padding: 10px;
-    background-color: purple;
+    background-color: dodgerblue;
     color: white;
     border-radius: 10px;
     margin: 0 auto;
@@ -97,7 +97,7 @@ section {
 .card {
     /*overflow: hidden;*/
     /*height: auto;*/
-    height: 600px;
+    height: 540px;
     margin: 10px;
     border-radius: 10px;
 }
@@ -128,18 +128,6 @@ section {
     pointer-events: none;
 }
 
-
-.likeBtn {
-    width: 150px;
-    text-align: center;
-    padding: 10px;
-    background-color: purple;
-    color: white;
-    border-radius: 10px;
-    margin: 0 auto;
-    cursor: pointer;
-    transition: 0.3s;
-}
 
 .likeBtn:hover {
     background-color: white;
