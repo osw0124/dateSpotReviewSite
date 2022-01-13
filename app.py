@@ -23,9 +23,11 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        user_id = payload['id'];
+
         review_list = list(db.reviewlist.find({}, {'_id': False}));
 
-        return render_template('reviewList.html', reviewList=review_list)
+        return render_template('reviewList.html', reviewList=review_list, userid=user_id)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -66,7 +68,7 @@ def sign_in():
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
         # 성공 결과와 토큰 정보를 클라이언트에 리턴 합니다.
-       return jsonify({'result': 'success', 'token': token})
+        return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
@@ -104,6 +106,7 @@ def insertReview():
     areaName = request.form['area_give']
     starScore = request.form['star_give']
     content = request.form['content_give']
+    user_id = request.form['id_give']
 
     image = request.files["image_give"]
 
@@ -128,6 +131,7 @@ def insertReview():
         'area': areaName,
         'score': starScore,
         'content': content,
+        'id': user_id,
         'images': f'{filename}.{extension}'
     }
 
