@@ -76,25 +76,28 @@ def sign_in():
 # 회원가입
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
+    # 클라이언트에게 아이디와 패스워드를 받아 저장
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
+    # 패스워드 해쉬 값을 저장
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    # 회원 정보 db에 저장
     doc = {
         "username": username_receive,  # 아이디
         "password": password_hash,  # 비밀번호
-        "profile_name": username_receive,  # 프로필 이름 기본값은 아이디
-        "profile_pic": "",  # 프로필 사진 파일 이름
-        "profile_pic_real": "profile_pics/profile_placeholder.png",  # 프로필 사진 기본 이미지
-        "profile_info": ""  # 프로필 한 마디
     }
     db.users.insert_one(doc)
+    # 클라이언트에게 가입 성공 전달
     return jsonify({'result': 'success'})
 
-
+# 아이디 중복 확인
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
+    # 사용하려는 아이디 수신
     username_receive = request.form['username_give']
+    # bool 기능으로 중복 확인
     exists = bool(db.users.find_one({"username": username_receive}))
+    # 클라이언트에게 중복 여부 전달
     return jsonify({'result': 'success', 'exists': exists})
 
 # ------------------- 원석 작업 추가
@@ -126,6 +129,7 @@ def insertReview():
     # 저~~~~~장
     image.save(save_to)
 
+    # id는 클라이언트에서 보정해서 전달 받고 이미지 파일 이름과 확장자는 위의 단계를 거쳐 제가공된 결과
     doc = {
         'place': placeName,
         'area': areaName,
@@ -149,6 +153,7 @@ def abc():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # db에 저장된 리뷰 출력
         review_list = list(db.reviewlist.find({}, {'_id': False}));
 
         return render_template('reviewList.html', reviewList=review_list)
@@ -166,6 +171,7 @@ def mypage():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # db에 저장된 리뷰 출력
         rows = list(db.reviewlist.find({}, {'_id': False}))
         print(rows)
         return render_template("mypage.html", rows=rows)
@@ -177,7 +183,7 @@ def mypage():
 
 
 
-
+# 리뷰 삭제
 @app.route('/api/delete_review', methods=['POST'])
 def delete_review():
     receive_file = request.form['give_file']
