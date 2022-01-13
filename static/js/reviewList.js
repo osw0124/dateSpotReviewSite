@@ -76,10 +76,6 @@ function review_Add() {
             return false;
         }
 
-        // userid 적혀있는 요소
-        let useridEltext = document.querySelector('.userid').textContent;
-        // 요소에서 text값 잘라서 id 추출
-        let user_id = useridEltext.substring(0, useridEltext.length-2);
 
 
 
@@ -93,8 +89,6 @@ function review_Add() {
         form_data.append("area_give", area);
         form_data.append("star_give", starScore);
         form_data.append("content_give", content);
-        form_data.append("id_give", user_id);
-
         $.ajax({
             type: "POST",
             url: "/api/review_input",
