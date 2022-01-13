@@ -12,6 +12,7 @@
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -172,6 +173,12 @@
 
         }
 
+        // 로그아웃
+        function logout() {
+            $.removeCookie('mytoken');
+            alert('로그아웃 완료!');
+            window.location.href = '/login';
+        }
 
 
 
@@ -186,6 +193,9 @@
         <div class="mypage-head">
             <button onclick="window.location.href='/reviewlist'" type="button" class="btn btn-primary mypage-head__btn">
                 홈
+            </button>
+            <button onclick="logout()" type="button" class="btn btn-primary mypage-head__btn">
+                LogOut
             </button>
         </div>
 
