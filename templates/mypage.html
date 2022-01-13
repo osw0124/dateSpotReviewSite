@@ -145,6 +145,7 @@
             justify-content: center;
             flex-direction: column;
         }
+
         .btn {
             background: dodgerblue;
 
@@ -164,7 +165,7 @@
             $.ajax({
                 type: "POST",
                 url: `/api/delete_review`,
-                data: {give_file : file},
+                data: {give_file: file},
                 success: function (response) {
                     alert(response["msg"])
                     window.location.href = '/mypage'
@@ -181,7 +182,6 @@
         }
 
 
-
     </script>
 
 </head>
@@ -191,6 +191,9 @@
 <div class="inner">
     <div class="wrap">
         <div class="mypage-head">
+            <li class="nav-item">
+                <span class="userid">{{ myid }} 님</span>
+            </li>
             <button onclick="window.location.href='/reviewlist'" type="button" class="btn btn-primary mypage-head__btn">
                 홈
             </button>
@@ -201,27 +204,26 @@
 
         <div class="card-boxs">
             {% for row in rows %}
-                <div class="card-columm">
-                    <div class="card-box">
-                        <div class="card-box__image">
-                            <img class="card-box__image1" src="../static/upload/{{ row.images }}"/>
-                        </div>
-                        <div class="card-box__name__star">
-                            <h5>장소이름: {{ row.place }}</h5>
-                        </div>
-                        <div class="card-box__content">
-                            <div class="card-box__content__row"><h5>내용:</h5></div>
-                            <div class="card-box__content__row"><h5>{{ row.content }}</h5</div>
-                            <div class="card-box__content__row card-box__content__hash">#{{ row.area }}</div>
-                        </div>
+            <div class="card-columm">
+                <div class="card-box">
+                    <div class="card-box__image">
+                        <img class="card-box__image1" src="../static/upload/{{ row.images }}"/>
                     </div>
-                    <div class="card-box__button">
-                        <button onclick="delete_review('{{ row.images }}')" type="button" class="btn btn-dark">삭제
-                        </button>
+                    <div class="card-box__name__star">
+                        <h5>장소이름: {{ row.place }}</h5>
+                    </div>
+                    <div class="card-box__content">
+                        <div class="card-box__content__row"><h5>내용:</h5></div>
+                        <div class="card-box__content__row"><h5>{{ row.content }}</h5</div>
+                        <div class="card-box__content__row card-box__content__hash">#{{ row.area }}</div>
                     </div>
                 </div>
+                <div class="card-box__button">
+                    <button onclick="delete_review('{{ row.images }}')" type="button" class="btn btn-dark">삭제
+                    </button>
+                </div>
+            </div>
             {% endfor %}
-
 
 
         </div>
