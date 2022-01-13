@@ -68,7 +68,7 @@ def sign_in():
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
         # 성공 결과와 토큰 정보를 클라이언트에 리턴 합니다.
-       return jsonify({'result': 'success', 'token': token})
+        return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
