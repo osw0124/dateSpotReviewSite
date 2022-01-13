@@ -23,9 +23,11 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        user_id = payload['id'];
+
         review_list = list(db.reviewlist.find({}, {'_id': False}));
 
-        return render_template('reviewList.html', reviewList=review_list)
+        return render_template('reviewList.html', reviewList=review_list, userid=user_id)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -97,6 +99,7 @@ def insertReview():
     areaName = request.form['area_give']
     starScore = request.form['star_give']
     content = request.form['content_give']
+    user_id = request.form['id_give']
 
     image = request.files["image_give"]
 
@@ -121,6 +124,7 @@ def insertReview():
         'area': areaName,
         'score': starScore,
         'content': content,
+        'id': user_id,
         'images': f'{filename}.{extension}'
     }
 
