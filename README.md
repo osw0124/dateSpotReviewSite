@@ -21,3 +21,9 @@
 
 페이지 소개 영상: https://youtu.be/9rfEuBnDMC4
 
+## 실행 환경
+	-Python		3.6.9
+	-pymongo	4.0.1
+	-Jinja2		3.0.3
+	-Flask		2.0.2
+	-PyJWT		2.3.0
