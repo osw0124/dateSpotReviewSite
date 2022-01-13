@@ -21,3 +21,8 @@
 
 페이지 소개 영상: https://youtu.be/9rfEuBnDMC4
 
+## 실행 환경
+	-pymongo
+	-Jinja2
+	-Flask
+	-PyJWT
