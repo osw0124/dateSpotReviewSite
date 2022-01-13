@@ -23,6 +23,11 @@ header {
     position: relative;
 }
 
+.userid {
+    font-weight: 700;
+    color: purple;
+}
+
 nav ul {
     position: absolute;
     right: 300px;
