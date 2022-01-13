@@ -103,14 +103,16 @@ def check_dup():
 # ------------------- 원석 작업 추가
 
 ## 리뷰 저장
+
 @app.route('/api/review_input', methods=['POST'])
 def insertReview():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    user_id = payload['id']
     placeName = request.form['place_give']
     areaName = request.form['area_give']
     starScore = request.form['star_give']
     content = request.form['content_give']
-    user_id = request.form['id_give']
-
     image = request.files["image_give"]
 
     # 이름 겹치지 않게 하기
@@ -129,7 +131,6 @@ def insertReview():
     # 저~~~~~장
     image.save(save_to)
 
-    # id는 클라이언트에서 보정해서 전달 받고 이미지 파일 이름과 확장자는 위의 단계를 거쳐 제가공된 결과
     doc = {
         'place': placeName,
         'area': areaName,
@@ -152,11 +153,9 @@ def abc():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
-        # db에 저장된 리뷰 출력
+        myid = payload['id']
         review_list = list(db.reviewlist.find({}, {'_id': False}));
-
-        return render_template('reviewList.html', reviewList=review_list)
+        return render_template('reviewList.html', reviewList=review_list,userid=myid)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -164,26 +163,22 @@ def abc():
 # 이거는 reviewlist 랜더링 해주는 코드 입니다. 원석님
 
 
-
 @app.route('/mypage')
 def mypage():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-
-        # db에 저장된 리뷰 출력
-        rows = list(db.reviewlist.find({}, {'_id': False}))
+        myid = payload['id']
+        print(payload)
+        rows = list(db.reviewlist.find({'id':myid}, {'_id': False}))
         print(rows)
-        return render_template("mypage.html", rows=rows)
+        return render_template("mypage.html", rows=rows, myid=myid)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
-
-
-# 리뷰 삭제
 @app.route('/api/delete_review', methods=['POST'])
 def delete_review():
     receive_file = request.form['give_file']
@@ -197,7 +192,3 @@ def delete_review():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
-
-
-
-
