@@ -44,51 +44,60 @@ def login():
 def move_register():
     return render_template('register.html')
 
-
+# 로그인
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
-    # 로그인
+    # 클라이언트에서 보낸 아이디, 패스워드 저장
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
+    # 저장한 패스워드를 SHA256으로 암호화해서 해쉬 값으로 저장 암호화한 패스워드는 복호화가 불가능한듯
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    # db에 아이디와 패스워드 해쉬 값 조회
     result = db.users.find_one({'username': username_receive, 'password': pw_hash})
 
+    # 조회 결과가 none이 아니라면(조회결과가 있다는 이야기고 따라서 로그인이 가능하다)
     if result is not None:
+        # payload에 아이디와 토큰 유효시간 저장
         payload = {
             'id': username_receive,
             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         # AWS에서는 .decode('utf-8')이 있어야 에러나 나지 않습니다.
+        # 패이로드를 키로 암호화해서 토큰에 저장, 이는 키로 복호화가 가능한 듯, encoding과 encryption은 다르며 JWT는 서명용이라는 글이 있다
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
+        # 성공 결과와 토큰 정보를 클라이언트에 리턴 합니다.
         return jsonify({'result': 'success', 'token': token})
     # 찾지 못하면
     else:
         return jsonify({'result': 'fail', 'msg': '아이디/비밀번호가 일치하지 않습니다.'})
 
-
+# 회원가입
 @app.route('/sign_up/save', methods=['POST'])
 def sign_up():
+    # 클라이언트에게 아이디와 패스워드를 받아 저장
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
+    # 패스워드 해쉬 값을 저장
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    # 회원 정보 db에 저장
     doc = {
         "username": username_receive,  # 아이디
         "password": password_hash,  # 비밀번호
-        "profile_name": username_receive,  # 프로필 이름 기본값은 아이디
-        "profile_pic": "",  # 프로필 사진 파일 이름
-        "profile_pic_real": "profile_pics/profile_placeholder.png",  # 프로필 사진 기본 이미지
-        "profile_info": ""  # 프로필 한 마디
     }
     db.users.insert_one(doc)
+    # 클라이언트에게 가입 성공 전달
     return jsonify({'result': 'success'})
 
-
+# 아이디 중복 확인
 @app.route('/sign_up/check_dup', methods=['POST'])
 def check_dup():
+    # 사용하려는 아이디 수신
     username_receive = request.form['username_give']
+    # bool 기능으로 중복 확인
     exists = bool(db.users.find_one({"username": username_receive}))
+    # 클라이언트에게 중복 여부 전달
     return jsonify({'result': 'success', 'exists': exists})
 
 # ------------------- 원석 작업 추가
@@ -120,6 +129,7 @@ def insertReview():
     # 저~~~~~장
     image.save(save_to)
 
+    # id는 클라이언트에서 보정해서 전달 받고 이미지 파일 이름과 확장자는 위의 단계를 거쳐 제가공된 결과
     doc = {
         'place': placeName,
         'area': areaName,
@@ -143,6 +153,7 @@ def abc():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # db에 저장된 리뷰 출력
         review_list = list(db.reviewlist.find({}, {'_id': False}));
 
         return render_template('reviewList.html', reviewList=review_list)
@@ -160,6 +171,7 @@ def mypage():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # db에 저장된 리뷰 출력
         rows = list(db.reviewlist.find({}, {'_id': False}))
         print(rows)
         return render_template("mypage.html", rows=rows)
@@ -171,7 +183,7 @@ def mypage():
 
 
 
-
+# 리뷰 삭제
 @app.route('/api/delete_review', methods=['POST'])
 def delete_review():
     receive_file = request.form['give_file']
